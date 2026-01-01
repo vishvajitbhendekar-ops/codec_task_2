@@ -1,0 +1,72 @@
+import React, { useState, useEffect } from "react";
+
+export default function App() { const [user, setUser] = useState({ name: "", role: "patient" }); const [appointments, setAppointments] = useState([]); const [date, setDate] = useState(""); const [time, setTime] = useState("");
+
+useEffect(() => { if (appointments.length > 0) { alert("⏰ Reminder: You have an upcoming appointment!"); } }, [appointments]);
+
+const bookAppointment = () => { if (!date || !time) return alert("Please select date and time"); setAppointments([...appointments, { date, time }]); setDate(""); setTime(""); };
+
+return ( <div className="min-h-screen bg-gray-100 p-6 flex justify-center"> <div className="bg-white shadow-xl rounded-2xl p-6 w-full max-w-md"> <h1 className="text-2xl font-bold mb-4 text-center"> 🏥 Healthcare Appointment System </h1>
+
+{/* User Profile */}
+    <div className="mb-4">
+      <h2 className="font-semibold mb-2">User Profile</h2>
+      <input
+        type="text"
+        placeholder="Enter Name"
+        value={user.name}
+        onChange={(e) => setUser({ ...user, name: e.target.value })}
+        className="border p-2 rounded w-full mb-2"
+      />
+      <select
+        value={user.role}
+        onChange={(e) => setUser({ ...user, role: e.target.value })}
+        className="border p-2 rounded w-full"
+      >
+        <option value="patient">Patient</option>
+        <option value="doctor">Doctor</option>
+      </select>
+    </div>
+
+    {/* Calendar Booking */}
+    <div className="mb-4">
+      <h2 className="font-semibold mb-2">Book Appointment</h2>
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        className="border p-2 rounded w-full mb-2"
+      />
+      <input
+        type="time"
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        className="border p-2 rounded w-full mb-2"
+      />
+      <button
+        onClick={bookAppointment}
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+      >
+        Book Appointment
+      </button>
+    </div>
+
+    {/* Appointment List */}
+    <div>
+      <h2 className="font-semibold mb-2">Appointments</h2>
+      {appointments.length === 0 ? (
+        <p className="text-sm text-gray-500">No appointments yet</p>
+      ) : (
+        <ul className="text-sm">
+          {appointments.map((a, i) => (
+            <li key={i} className="border-b py-1">
+              📅 {a.date} ⏰ {a.time}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+</div>
+
+); }
